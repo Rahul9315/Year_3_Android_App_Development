@@ -1,2 +1,49 @@
-package com.example.listwithflags;public class CustomCountryList {
+package com.example.listwithflags;
+
+import android.app.Activity;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+public class CustomCountryList extends ArrayAdapter {
+    private String[] countryNames;
+    private String[] capitalNames;
+    private Integer[] imageid;
+    private Activity context;
+
+    public CustomCountryList(Activity context, String[] countryNames, String[] capitalNames, Integer[] imageid){
+        super(context , R.layout.row_item, countryNames);
+        this.context = context;
+        this.countryNames = countryNames;
+        this.capitalNames = capitalNames;
+        this.imageid = imageid;
+    }
+
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+        View row = convertView;
+        LayoutInflater inflater = context.getLayoutInflater();
+        if (convertView == null)
+            row = inflater.inflate(R.layout.row_item, null, true);
+        TextView textViewCountry = (TextView) row.findViewById(R.id.textViewCountry);
+        TextView textViewCapital = (TextView) row.findViewById(R.id.textViewCapital);
+        ImageView imageFlag = (ImageView) row.findViewById(R.id.imageViewFlag);
+
+        textViewCountry.setText((countryNames[position]));
+        textViewCapital.setText(capitalNames[position]);
+        imageFlag.setImageResource(imageid[position]);
+
+
+
+        textViewCountry.setOnClickListener(new View.OnClickListener() {
+            public void onclick(View v) {
+                Toast.makeText(CustomCountryList.this, "You clicked on " + countryNames[position], Toast.LENGTH_SHORT).show();
+            }
+        });
+        return row;
+    }
+
 }

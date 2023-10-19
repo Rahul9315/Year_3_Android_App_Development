@@ -9,7 +9,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.example.listwithflags.MainActivity.MainActivity">
+    tools:context="com.example.listwithflags.MainActivity">
 
     <ListView
         android:id="@+id/list"
