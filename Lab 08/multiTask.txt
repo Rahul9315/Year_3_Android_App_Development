@@ -1,0 +1,67 @@
+import android.os.Bundle;
+import android.os.SystemClock;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+public class MainActivity extends AppCompatActivity {
+
+    private BackgroundThread backgroundThread;
+
+    /**
+     * Task 1 will be started in the thread
+     */
+    private Runnable task1 = () -> {
+        // this is called in the thread
+        for (int i = 0; i < 10; i++) {
+            SystemClock.sleep(1000); // some delay
+            // Assume this is a heavy task which is performed
+        }
+    };
+
+    /**
+     * Task 2 will be started in the same thread after task1 is finished executing
+     */
+    private Runnable task2 = () -> {
+        // this is called in the thread
+        for (int i = 0; i < 100; i++) {
+            // Assume this is a heavy task which is performed
+        }
+    };
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main2);
+        backgroundThread = new BackgroundThread();
+        backgroundThread.start(); // Start a new thread
+        backgroundThread.addTaskToMessageQueue(task1); // Add task1 to the message queue of the thread
+        backgroundThread.addTaskToMessageQueue(task2); // Add task2 to the message queue of the same thread
+    }
+}
+
+************----------------------------------------**********************
+
+import android.os.Handler;
+import android.os.Looper;
+
+public class BackgroundThread extends Thread {
+
+    private Handler handler;
+
+    @Override
+    public void run() {
+        super.run();
+        Looper.prepare(); // Associating thread
+        handler = new Handler();
+        Looper.loop();
+    }
+
+    /**
+     * This method is used to add different tasks to the message queue
+     *
+     * @param task
+     */
+    public void addTaskToMessageQueue(Runnable task) {
+        handler.post(task); // First task1 is added to the queue then task2.
+    }
+}
